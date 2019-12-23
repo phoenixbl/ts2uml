@@ -1,4 +1,4 @@
-import * as glob from "glob";
+import glob from "glob";
 import * as request from "request";
 import * as fs from "fs";
 

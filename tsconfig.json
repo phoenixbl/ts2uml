@@ -5,7 +5,8 @@
     "lib": ["dom", "es2015"],
     "strict": true,
     "outDir": "dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*"]
 }

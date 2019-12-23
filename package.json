@@ -1,33 +1,14 @@
 {
     "name": "ts2uml",
-    "version": "0.0.1-alpha.8",
+    "version": "0.0.1",
     "description": "UML diagrams for TypeScript",
     "main": "dist/lib/index.js",
     "bin": {
         "wit-ts2uml": "dist/bin/index.js"
     },
-    "devDependencies": {
-        "@types/glob": "5.0.35",
-        "@types/lodash": "4.14.106",
-        "@types/node": "9.6.0",
-        "@types/opn": "5.1.0",
-        "@types/request": "latest",
-        "@types/yargs": "11.0.0"
-    },
-    "dependencies": {
-        "chalk": "2.3.2",
-        "glob": "7.1.2",
-        "lodash": "4.17.5",
-        "opn": "5.3.0",
-        "request": "2.85.0",
-        "ts-node": "^8.5.4",
-        "ts-simple-ast": "9.5.0",
-        "typescript": "^3.7.4",
-        "yargs": "11.0.0"
-    },
     "scripts": {
         "compile": "tsc -p tsconfig.json",
-        "start":"npm run compile && node ./dist/bin/index.js"
+        "start": "npm run compile && node ./dist/bin/index.js"
     },
     "keywords": [
         "typescript",
@@ -37,5 +18,23 @@
         "class"
     ],
     "author": "Phoenix@WIT",
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "@types/glob": "^7.1.1",
+        "@types/lodash": "^4.14.149",
+        "@types/node": "^12.12.21",
+        "@types/request": "latest",
+        "@types/yargs": "^13.0.3"
+    },
+    "dependencies": {
+        "chalk": "^3.0.0",
+        "glob": "^7.1.6",
+        "lodash": "^4.17.15",
+        "open": "^7.0.0",
+        "request": "2.88.0",
+        "ts-node": "^8.5.4",
+        "ts-simple-ast": "^21.0.4",
+        "typescript": "^3.7.4",
+        "yargs": "^15.0.2"
+    }
 }
