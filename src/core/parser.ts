@@ -1,15 +1,13 @@
-import * as SimpleAST from "ts-morph";
+import * as TsMorph from "ts-morph";
 import * as ts from "typescript";
 import { flatten, join } from "lodash";
 import { PropertyDetails, MethodDetails, HeritageClause } from "./interfaces";
 
 export function getAst(tsConfigPath: string, sourceFilesPaths?: string[]) {
-  const ast = new SimpleAST.Project({
+  const ast = new TsMorph.Project({
     tsConfigFilePath: tsConfigPath,
     addFilesFromTsConfig: !Array.isArray(sourceFilesPaths)
   });
-
-  // const aa = new
 
   if (sourceFilesPaths) {
     ast.addSourceFilesAtPaths(sourceFilesPaths);
@@ -17,7 +15,7 @@ export function getAst(tsConfigPath: string, sourceFilesPaths?: string[]) {
   return ast;
 }
 
-export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
+export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
   const className = classDeclaration.getSymbol()!.getName();
   const propertyDeclarations = classDeclaration.getProperties();
   const methodDeclarations = classDeclaration.getMethods();
@@ -48,7 +46,7 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
 }
 
 export function parseInterfaces(
-  interfaceDeclaration: SimpleAST.InterfaceDeclaration
+  interfaceDeclaration: TsMorph.InterfaceDeclaration
 ) {
   const interfaceName = interfaceDeclaration.getSymbol()!.getName();
   const propertyDeclarations = interfaceDeclaration.getProperties();
@@ -80,7 +78,7 @@ export function parseInterfaces(
 }
 
 export function parseHeritageClauses(
-  classDeclaration: SimpleAST.ClassDeclaration
+  classDeclaration: TsMorph.ClassDeclaration
 ) {
   const className = classDeclaration.getSymbol()!.getName();
   const extended = classDeclaration.getExtends();
