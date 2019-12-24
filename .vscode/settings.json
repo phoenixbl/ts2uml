@@ -1,0 +1,8 @@
+{
+    "cSpell.words": [
+        "Interop"
+    ],
+    "search.exclude": {
+        "**/node_modules": false
+    }
+}

@@ -8,13 +8,13 @@ import { download, downloadAndSave } from "../core/io";
 (async () => {
   try {
     if (yargs.argv.help) {
-      console.log(chalk.yellowBright("tsuml --glob ./src/**/*.ts"));
+      console.log(chalk.yellowBright("ts2uml --glob ./src/**/*.ts"));
     }
 
     let pattern = yargs.argv.glob as string;
-    // pattern = "./src/**/*.ts";
-    // pattern =
-    //   "/Users/phoenixjiang/Source/vs-ext-sample-new/vscode-extension-samples/tree-view-sample/src/extension.ts";
+    pattern = "./src/**/*.ts";
+    pattern =
+      "/Users/phoenixjiang/Source/vs-ext-sample-new/vscode-extension-samples/tree-view-sample/src/**/*.ts";
 
     if (!pattern) {
       console.log(chalk.redBright("Missing --glob"));
@@ -25,6 +25,8 @@ import { download, downloadAndSave } from "../core/io";
       opn(url);
     }
   } catch (e) {
-    console.log(chalk.redBright(e));
+    console.log(e);
+    console.log(e.stack);
+    // console.log(chalk.redBright(e));
   }
 })();
