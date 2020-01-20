@@ -2,6 +2,7 @@ import * as TsMorph from "ts-morph";
 import * as ts from "typescript";
 import { flatten, join } from "lodash";
 import { PropertyDetails, MethodDetails, HeritageClause } from "./interfaces";
+import { stringify } from "querystring";
 
 export function getAst(tsConfigPath: string, sourceFilesPaths?: string[]) {
   const ast = new TsMorph.Project({
@@ -36,7 +37,9 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
       const sym = method.getSymbol();
       if (sym) {
         return {
-          name: sym.getName()
+          name: sym.getName(),
+          type: sym.getDeclaredType(),
+          pub: sym.getFlags()
         };
       }
     })
@@ -57,7 +60,9 @@ export function parseInterfaces(
       const sym = property.getSymbol();
       if (sym) {
         return {
-          name: sym.getName()
+          name: sym.getName(),
+          type: sym.getDeclaredType(),
+          pub: sym.getFlags()
         };
       }
     })
@@ -66,9 +71,14 @@ export function parseInterfaces(
   const methods = methodDeclarations
     .map(method => {
       const sym = method.getSymbol();
+
       if (sym) {
         return {
-          name: sym.getName()
+          name: sym.getName(),
+          typeS: method.getReturnType().getSymbol()?.getName(),
+          paramS: method.getParameters().map(p=>{
+            return 
+          })
         };
       }
     })

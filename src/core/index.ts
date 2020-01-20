@@ -2,11 +2,19 @@ import * as fs from "fs";
 import chalk from "chalk";
 import { flatten, join } from "lodash";
 import { findFilesByGlob, download } from "./io";
-import { getAst, parseClasses, parseInterfaces, parseHeritageClauses } from "./parser";
-import { emitSingleClass, emitSingleInterface, emitHeritageClauses } from "./emitter";
+import {
+  getAst,
+  parseClasses,
+  parseInterfaces,
+  parseHeritageClauses
+} from "./parser";
+import {
+  emitSingleClass,
+  emitSingleInterface,
+  emitHeritageClauses
+} from "./emitter";
 
 async function getDsl(tsConfigPath: string, pattern: string) {
-
   const sourceFilesPaths = await findFilesByGlob(pattern);
 
   console.log(
@@ -33,14 +41,17 @@ async function getDsl(tsConfigPath: string, pattern: string) {
 
   // emitter
   const entities = declarations.map(d => {
-    const classes = d.classes.map((c) => emitSingleClass(c.className, c.properties, c.methods));
-    const interfaces = d.interfaces.map((i) => emitSingleInterface(i.interfaceName, i.properties, i.methods));
+    const classes = d.classes.map(c =>
+      emitSingleClass(c.className, c.properties, c.methods)
+    );
+    const interfaces = d.interfaces.map(i =>
+      emitSingleInterface(i.interfaceName, i.properties, i.methods)
+    );
     const heritageClauses = d.heritageClauses.map(emitHeritageClauses);
     return [...classes, ...interfaces, ...heritageClauses];
   });
 
   return join(flatten(entities), ",");
-
 }
 
 export async function getUrl(tsConfigPath: string, pattern: string) {
