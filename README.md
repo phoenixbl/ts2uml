@@ -9,6 +9,7 @@
 ```sh
 npm install -g wit-ts2uml
 
+
 ```
 
 #### 使用說明
