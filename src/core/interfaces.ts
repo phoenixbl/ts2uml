@@ -1,6 +1,6 @@
 export interface MethodDetails {
   name: string;
-  //   parameters: any;
+  returnType: string;
 }
 
 export interface PropertyDetails {

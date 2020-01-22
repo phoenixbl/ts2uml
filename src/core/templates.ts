@@ -13,8 +13,13 @@ export const templates = {
   colorInterface: (name: string) => `[${name}{bg:palegreen}]`,
   class: (name: string, props: PropertyDetails[], methods: MethodDetails[]) => {
     const pTemplate = (property: PropertyDetails) =>
-      `${property.name}:${property.propertyType};`;
-    const mTemplate = (method: MethodDetails) => `${method.name}();`;
+      `${property.name}${
+        !property.propertyType ? "" : ":" + property.propertyType
+      };`;
+    const mTemplate = (method: MethodDetails) =>
+      `${method.name}()${
+        method.returnType === "void" ? "" : ":" + method.returnType
+      };`;
     return (
       `${templates.colorClass(name)}` +
       `[${name}|${props.map(pTemplate).join("")}|${methods

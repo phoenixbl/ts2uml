@@ -25,11 +25,21 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
     .map(property => {
       const sym = property.getSymbol();
       const propertyType = property.getType();
+      const unitTypes = propertyType.getUnionTypes();
+      let t = propertyType?.getText();
+
+      if (unitTypes) {
+        t = unitTypes
+          .map(m => {
+            return m.getText();
+          })
+          .join("|");
+      }
 
       if (sym) {
         return {
           name: sym.getName(),
-          propertyType: propertyType?.getText()
+          propertyType: t //propertyType + ""
         };
       }
     })
@@ -38,11 +48,12 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
   const methods = methodDeclarations
     .map(method => {
       const sym = method.getSymbol();
+      const t = method.getReturnType().getText();
+
       if (sym) {
         return {
           name: sym.getName(),
-          type: sym.getDeclaredType(),
-          pub: sym.getFlags()
+          returnType: t
         };
       }
     })
@@ -75,14 +86,12 @@ export function parseInterfaces(
   const methods = methodDeclarations
     .map(method => {
       const sym = method.getSymbol();
+      const t = method.getReturnType().getText();
 
       if (sym) {
         return {
           name: sym.getName(),
-          typeS: method
-            .getReturnType()
-            .getSymbol()
-            ?.getName(),
+          returnType: t,
           paramS: method.getParameters().map(p => {
             return;
           })
