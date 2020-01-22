@@ -27,16 +27,22 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
       const propertyType = property.getType();
       const unitTypes = propertyType.getUnionTypes();
       let t = propertyType?.getText();
+      const isPublic =
+        property.hasModifier(ts.SyntaxKind.PublicKeyword) &&
+        property.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
 
-      if (unitTypes) {
-        t = unitTypes
-          .map(m => {
-            return m.getText();
-          })
-          .join("|");
-      }
+      console.log(
+        "ispublic:" + isPublic + ":" + sym?.getName() + "[" + t + "]"
+      );
+      // if (unitTypes) {
+      //   t = unitTypes
+      //     .map(m => {
+      //       return m.getText();
+      //     })
+      //     .join("|");
+      // }
 
-      if (sym) {
+      if (isPublic && sym) {
         return {
           name: sym.getName(),
           propertyType: t //propertyType + ""
@@ -48,12 +54,29 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
   const methods = methodDeclarations
     .map(method => {
       const sym = method.getSymbol();
-      const t = method.getReturnType().getText();
+      const t = method
+        .getReturnType()
+        .getText(
+          method.getReturnTypeNode(),
+          ts.TypeFormatFlags.UseTypeOfFunction
+        );
+
+      const c = method
+        .getSignature()
+        .getTypeParameters()
+        .map(p =>
+          p
+            .getDefault()
+            ?.getApparentType()
+            .getText()
+        )
+        .join(",");
 
       if (sym) {
         return {
           name: sym.getName(),
-          returnType: t
+          returnType: t,
+          c: c
         };
       }
     })
@@ -87,11 +110,21 @@ export function parseInterfaces(
     .map(method => {
       const sym = method.getSymbol();
       const t = method.getReturnType().getText();
-
+      const c = method
+        .getSignature()
+        .getTypeParameters()
+        .map(p =>
+          p
+            .getDefault()
+            ?.getApparentType()
+            .getText()
+        )
+        .join(",");
       if (sym) {
         return {
           name: sym.getName(),
           returnType: t,
+          c: c,
           paramS: method.getParameters().map(p => {
             return;
           })

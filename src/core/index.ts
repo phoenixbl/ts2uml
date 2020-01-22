@@ -14,7 +14,7 @@ import {
   emitHeritageClauses
 } from "./emitter";
 
-async function getDsl(tsConfigPath: string, pattern: string) {
+export async function getDsl(tsConfigPath: string, pattern: string) {
   const sourceFilesPaths = await findFilesByGlob(pattern);
 
   console.log(
@@ -55,6 +55,7 @@ async function getDsl(tsConfigPath: string, pattern: string) {
 }
 
 export async function getUrl(tsConfigPath: string, pattern: string) {
-  const dsl = await getDsl(tsConfigPath, pattern);
+  let dsl = await getDsl(tsConfigPath, pattern);
+  console.log(dsl);
   return await download(dsl);
 }

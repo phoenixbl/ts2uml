@@ -2,7 +2,7 @@
 
 import chalk from "chalk";
 import * as yargs from "yargs";
-import { getUrl } from "../core";
+import { getUrl, getDsl } from "../core";
 import { download, downloadAndSave } from "../core/io";
 
 (async () => {
@@ -23,6 +23,9 @@ import { download, downloadAndSave } from "../core/io";
       await downloadAndSave(url);
       const opn = require("open");
       opn(url);
+
+      // const dsl = await getDsl("./tsconfig.json", pattern);
+      // console.log(dsl);
     }
   } catch (e) {
     console.log(e);

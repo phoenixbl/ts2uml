@@ -1,6 +1,7 @@
 export interface MethodDetails {
   name: string;
   returnType: string;
+  c: string;
 }
 
 export interface PropertyDetails {
