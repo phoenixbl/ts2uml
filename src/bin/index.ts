@@ -13,8 +13,8 @@ import { download, downloadAndSave } from "../core/io";
 
     let pattern = yargs.argv.glob as string;
     pattern = "./src/**/*.ts";
-    // pattern =
-    //   "/Users/phoenixjiang/Source/vs-ext-sample-new/vscode-extension-samples/tree-view-sample/src/**/*.ts";
+    pattern =
+      "/Users/phoenixjiang/Source/vs-ext-sample-new/vscode-extension-samples/tree-view-sample/src/**/*.ts";
 
     if (!pattern) {
       console.log(chalk.redBright("Missing --glob"));

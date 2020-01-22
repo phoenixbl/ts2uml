@@ -8,6 +8,7 @@
 
 ```sh
 npm install -g wit-ts2uml
+d
 
 
 ```

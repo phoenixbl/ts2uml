@@ -1,12 +1,14 @@
 export interface MethodDetails {
-    name: string;
+  name: string;
+  //   parameters: any;
 }
 
 export interface PropertyDetails {
-    name: string;
+  name: string;
+  propertyType: string;
 }
 
 export interface HeritageClause {
-    clause: string;
-    className: string;
+  clause: string;
+  className: string;
 }
