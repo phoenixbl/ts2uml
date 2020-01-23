@@ -1,0 +1,12 @@
+// {type:deployment}
+// {generate:true}
+
+[Presentation Server]-[Policy Server]
+[Policy Server]-[Document Server]
+[Product Server]-[Document Server]
+[Document Server]ASP.Net-[Workstation]
+[Policy Server]-[Database Server]
+[Product Server]-[Database Server]
+[Policy Server]-[note: To be clustered to meet throughput needs{bg:cornsilk}]
+[Policy Server]-[Directory Server]
+[Policy Server]-[Underwriting & Rating Server]

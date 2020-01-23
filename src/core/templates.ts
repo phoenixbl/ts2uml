@@ -57,17 +57,6 @@ function parsePropsAndMethods(
   const mTemplate = (method: MethodDetails) =>
     `${method.name}()${
       method.returnType === "void" ? "" : parseType(method.returnType)
-      // : ": " +
-      //   method.returnType
-      //     .replace(/\|/g, "｜")
-      //     .replace(/\[/g, "［") //［］
-      //     .replace(/\]/g, "］")
-      //     .replace(/{/g, "｛") //｛｝
-      //     .replace(/}/g, "｝")
-      //     .replace(/</g, "＜")
-      //     .replace(/>/, "＞")
-      //     .replace(/;/g, "；")
-      //     .replace(/import.+\./, "")
     }:${method.c};`;
   let parsedProperties = props.map(pTemplate).join("");
   let parsedMethods = methods.map(mTemplate).join("");
@@ -87,7 +76,7 @@ function parsePropsAndMethods(
             .replace(/\[/g, "［") //［］
             .replace(/\]/g, "］")
             .replace(/{/g, "｛") //｛｝
-            .replace(/}/g, "｝")
+            .replace(/}/g, "｝") //【】
             .replace(/</g, "＜")
             .replace(/>/, "＞")
             .replace(/;/g, "；")
