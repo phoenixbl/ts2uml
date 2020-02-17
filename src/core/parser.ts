@@ -25,27 +25,20 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
     .map(property => {
       const sym = property.getSymbol();
       const propertyType = property.getType();
-      const unitTypes = propertyType.getUnionTypes();
-      let t = propertyType?.getText();
+      let type = "" + propertyType?.getText();
+
       const isPublic =
         property.hasModifier(ts.SyntaxKind.PublicKeyword) &&
         property.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
 
       console.log(
-        "ispublic:" + isPublic + ":" + sym?.getName() + "[" + t + "]"
+        "isPublic:" + isPublic + ":" + sym?.getName() + "[" + type + "]"
       );
-      // if (unitTypes) {
-      //   t = unitTypes
-      //     .map(m => {
-      //       return m.getText();
-      //     })
-      //     .join("|");
-      // }
 
       if (isPublic && sym) {
         return {
           name: sym.getName(),
-          propertyType: t //propertyType + ""
+          propertyType: type
         };
       }
     })
@@ -54,29 +47,61 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
   const methods = methodDeclarations
     .map(method => {
       const sym = method.getSymbol();
-      const t = method
-        .getReturnType()
-        .getText(
-          method.getReturnTypeNode(),
-          ts.TypeFormatFlags.UseTypeOfFunction
-        );
+      // const t = method
+      //   .getReturnType()
+      //   .getText(
+      //     method.getReturnTypeNode(),
+      //     ts.TypeFormatFlags.UseTypeOfFunction
+      //   );
 
-      const c = method
-        .getSignature()
-        .getTypeParameters()
-        .map(p =>
-          p
-            .getDefault()
-            ?.getApparentType()
-            .getText()
-        )
-        .join(",");
+      // const c = method
+      //   .getSignature()
+      //   .getTypeParameters()
+      //   .map(p =>
+      //     p
+      //       .getDefault()
+      //       ?.getApparentType()
+      //       .getText()
+      //   )
+      //   .join(",");
+      const methodType = method.getType();
+      let type = "" + methodType?.getText();
+
+      const isPublic =
+        method.hasModifier(ts.SyntaxKind.PublicKeyword) &&
+        method.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
+
+      console.log(
+        "isPublic:" + isPublic + ":" + sym?.getName() + "[" + type + "]"
+      );
+      let returnType = "";
+      let params = "";
+
+      //       isPublic:false:getTreeItem[(element: { key: string; }) => import("vscode").TreeItem | Thenable<import("vscode").TreeItem>]
+      // isPublic:false:getTreeItemInternal[(key: string) => import("vscode").TreeItem]
+
+      if (type && type.length > 3) {
+        // type = type.substring(1);
+
+        let index = type.indexOf("=>"); //=＞ void
+        if (index < 0) {
+          returnType = "void";
+          if (type.startsWith("typeof ")) {
+            params = "";
+          } else {
+            params = type;
+          }
+        } else {
+          returnType = type.substring(index + 2).trim();
+          params = type.substring(1, index - 2); //receiveMessageHandlers: { [cmd: string]: Function; }) => void
+        }
+      }
 
       if (sym) {
         return {
           name: sym.getName(),
-          returnType: t,
-          c: c
+          returnType: returnType,
+          c: params
         };
       }
     })

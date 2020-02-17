@@ -53,13 +53,18 @@ function parsePropsAndMethods(
   methods: MethodDetails[]
 ) {
   const pTemplate = (property: PropertyDetails) =>
-    `${property.name}${parseType(property.propertyType)};`;
+    `${property.name}: ${parseType(property.propertyType)};`;
+
   const mTemplate = (method: MethodDetails) =>
-    `${method.name}()${
-      method.returnType === "void" ? "" : parseType(method.returnType)
-    }:${method.c};`;
+    `${method.name}${
+      method.returnType === "void"
+        ? "()"
+        : "(" + parseType(method.c) + "): " + parseType(method.returnType)
+    };`;
+
   let parsedProperties = props.map(pTemplate).join("");
   let parsedMethods = methods.map(mTemplate).join("");
+
   return (
     `${templates.color4Type(name, type)}` +
     `[${name}${parsedProperties ? "|" + parsedProperties : ""}${
@@ -70,7 +75,8 @@ function parsePropsAndMethods(
   function parseType(type: string) {
     return !type
       ? ""
-      : ": " +
+      : // : ": " +
+        "" +
           type
             .replace(/\|/g, "｜")
             .replace(/\[/g, "［") //［］
@@ -78,8 +84,11 @@ function parsePropsAndMethods(
             .replace(/{/g, "｛") //｛｝
             .replace(/}/g, "｝") //【】
             .replace(/</g, "＜")
-            .replace(/>/, "＞")
+            .replace(/>/g, "＞")
             .replace(/;/g, "；")
-            .replace(/import.+\./, "");
+            .replace(/,/g, "，")
+            .replace(/import.+\/.+\./g, "") // import("vscode").TreeItem
+            .replace(/import\(\"/g, "")
+            .replace(/\"\)/g, "");
   }
 }

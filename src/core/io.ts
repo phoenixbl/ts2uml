@@ -26,9 +26,14 @@ export async function download(dsl: string) {
       if (err) {
         reject(err);
       }
-      const svgFileName = body.replace(".png", ".svg");
-      const diagramUrl = `${url}${svgFileName}`;
-      resolve(diagramUrl);
+      if (body) {
+        const svgFileName = body.replace(".png", ".svg");
+        const diagramUrl = `${url}${svgFileName}`;
+        resolve(diagramUrl);
+      } else {
+        console.error("Cannot generate uml diagram!");
+        throw new Error("Cannot generate uml diagram!");
+      }
     });
   });
 }
