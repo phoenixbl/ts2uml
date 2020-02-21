@@ -21,6 +21,14 @@ export function emitSingleInterface(
   return templates.interface(name, properties, methods);
 }
 
+export function emitSingleEnum(
+  name: string,
+  properties: PropertyDetails[],
+  methods: MethodDetails[]
+) {
+  return templates.enum(name, properties, methods);
+}
+
 export function emitHeritageClauses(heritageClauses: HeritageClause[]) {
   return heritageClauses.map(heritageClause =>
     templates.implementsOrExtends(

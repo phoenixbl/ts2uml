@@ -2,16 +2,19 @@ import * as fs from "fs";
 import chalk from "chalk";
 import { flatten, join } from "lodash";
 import { findFilesByGlob, download } from "./io";
+// import { emitSingleEnum } from "./emitter";
 import {
   getAst,
   parseClasses,
+  parseEnums,
   parseInterfaces,
   parseHeritageClauses
 } from "./parser";
 import {
   emitSingleClass,
   emitSingleInterface,
-  emitHeritageClauses
+  emitHeritageClauses,
+  emitSingleEnum
 } from "./emitter";
 
 export async function getDsl(tsConfigPath: string, pattern: string) {
@@ -30,12 +33,14 @@ export async function getDsl(tsConfigPath: string, pattern: string) {
   const declarations = files.map(f => {
     const classes = f.getClasses();
     const interfaces = f.getInterfaces();
+    const enums = f.getEnums();
     const path = f.getFilePath();
     return {
       fileName: path,
       classes: classes.map(parseClasses),
       heritageClauses: classes.map(parseHeritageClauses),
-      interfaces: interfaces.map(parseInterfaces)
+      interfaces: interfaces.map(parseInterfaces),
+      enums: enums.map(parseEnums)
     };
   });
 
@@ -47,8 +52,11 @@ export async function getDsl(tsConfigPath: string, pattern: string) {
     const interfaces = d.interfaces.map(i =>
       emitSingleInterface(i.interfaceName, i.properties, i.methods)
     );
+    const enums = d.enums.map(e =>
+      emitSingleEnum(e.className, e.properties, [])
+    );
     const heritageClauses = d.heritageClauses.map(emitHeritageClauses);
-    return [...classes, ...interfaces, ...heritageClauses];
+    return [...enums, ...classes, ...interfaces, ...heritageClauses];
   });
 
   return join(flatten(entities), ",");

@@ -1,8 +1,8 @@
 import * as TsMorph from "ts-morph";
 import * as ts from "typescript";
-import { flatten, join } from "lodash";
+// import { flatten, join } from "lodash";
 import { PropertyDetails, MethodDetails, HeritageClause } from "./interfaces";
-import { stringify } from "querystring";
+// import { stringify } from "querystring";
 
 export function getAst(tsConfigPath: string, sourceFilesPaths?: string[]) {
   const ast = new TsMorph.Project({
@@ -198,4 +198,36 @@ export function parseHeritageClauses(
   }
 
   return heritageClauses;
+}
+
+export function parseEnums(enumDeclaration: TsMorph.EnumDeclaration) {
+  const enumName = enumDeclaration.getSymbol()!.getName();
+  const enumMembers = enumDeclaration.getMembers(); //.getProperties();
+  // const methodDeclarations = enumDeclaration.getMethods();
+
+  const properties = enumMembers
+    .map(property => {
+      // const sym = property.getSymbol();
+      // const propertyType = property.getType();
+      // let type = "" + propertyType?.getText();
+      let type = "" + property.getText();
+
+      // const isPublic =
+      //   property.hasModifier(ts.SyntaxKind.PublicKeyword) &&
+      //   property.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
+
+      // console.log(
+      //   "isPublic:" + isPublic + ":" + sym?.getName() + "[" + type + "]"
+      // );
+
+      // if (isPublic && sym) {
+      return {
+        name: type, //sym.getName()
+        propertyType: ""
+      };
+      // }
+    })
+    .filter(p => p !== undefined) as PropertyDetails[];
+
+  return { className: enumName, properties };
 }

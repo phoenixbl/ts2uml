@@ -2,7 +2,8 @@ import { PropertyDetails, MethodDetails } from "./interfaces";
 
 enum SupportedTypes {
   CLASS,
-  INTERFACE
+  INTERFACE,
+  ENUM
 }
 
 export const templates = {
@@ -14,20 +15,25 @@ export const templates = {
     );
   },
   plainClassOrInterface: (name: string) => `[${name}]`,
-  colorClass: (name: string) => `[${name}]`, //`[${name}{bg:skyblue}]`,
-  colorInterface: (name: string) => `[${name}{bg:yellows}]`, //{bg:pink}]`, //`[${name}{bg:palegreen}]`,
+  // colorClass: (name: string) => `[${name}]`, //`[${name}{bg:skyblue}]`,
+  // colorInterface: (name: string) => `[${name}{bg:yellows}]`, //{bg:pink}]`, //`[${name}{bg:palegreen}]`,
   color4Type: (name: string, type: SupportedTypes) => {
     switch (type) {
       case SupportedTypes.CLASS:
         return `[${name}]`;
       case SupportedTypes.INTERFACE:
-        return `[${name}{bg:thistle}]`;
+        return `[${name}{bg:wheat}]`; //thistle}]`;
+      case SupportedTypes.ENUM:
+        return `[${name}{bg:skyblue}]`;
       default:
         return `[${name}]`;
     }
   },
   class: (name: string, props: PropertyDetails[], methods: MethodDetails[]) => {
     return parsePropsAndMethods(name, SupportedTypes.CLASS, props, methods);
+  },
+  enum: (name: string, props: PropertyDetails[], methods: MethodDetails[]) => {
+    return parsePropsAndMethods(name, SupportedTypes.ENUM, props, methods);
   },
   interface: (
     name: string,
@@ -53,7 +59,9 @@ function parsePropsAndMethods(
   methods: MethodDetails[]
 ) {
   const pTemplate = (property: PropertyDetails) =>
-    `${property.name}: ${parseType(property.propertyType)};`;
+    `${property.name}${
+      !property.propertyType ? "" : ": " + parseType(property.propertyType)
+    };`;
 
   const mTemplate = (method: MethodDetails) =>
     `${method.name}${
