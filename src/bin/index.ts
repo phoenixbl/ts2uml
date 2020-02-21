@@ -12,17 +12,22 @@ import { download, downloadAndSave } from "../core/io";
     }
 
     let pattern = yargs.argv.glob as string;
-    pattern = "./src/**/*.ts";
-    pattern =
-      "/Users/phoenixjiang/Source/vs-ext-sample-new/vscode-extension-samples/tree-view-sample/src/**/*.ts";
+    // pattern = "./src/**/*.ts";
+    // pattern =
+    //   "/Users/phoenixjiang/Source/vs-ext-sample-new/vscode-extension-samples/tree-view-sample/src/**/*.ts";
+
+    // pattern = "/Users/phoenixjiang/Source/p_wit_tree_vue/**/*.ts";
+    pattern = "/Users/phoenixjiang/Source/p_wit_menu_vue/**/*.ts";
 
     if (!pattern) {
       console.log(chalk.redBright("Missing --glob"));
     } else {
       const url = await getUrl("./tsconfig.json", pattern);
-      await downloadAndSave(url);
-      const opn = require("open");
-      opn(url);
+      if (url) {
+        await downloadAndSave(url);
+        // const opn = require("open");
+        // opn(url);
+      }
 
       // const dsl = await getDsl("./tsconfig.json", pattern);
       // console.log(dsl);

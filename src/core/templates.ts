@@ -15,13 +15,13 @@ export const templates = {
   },
   plainClassOrInterface: (name: string) => `[${name}]`,
   colorClass: (name: string) => `[${name}]`, //`[${name}{bg:skyblue}]`,
-  colorInterface: (name: string) => `[${name}{bg:pink}]`, //`[${name}{bg:palegreen}]`,
+  colorInterface: (name: string) => `[${name}{bg:yellows}]`, //{bg:pink}]`, //`[${name}{bg:palegreen}]`,
   color4Type: (name: string, type: SupportedTypes) => {
     switch (type) {
       case SupportedTypes.CLASS:
         return `[${name}]`;
       case SupportedTypes.INTERFACE:
-        return `[${name}{bg:pink}]`;
+        return `[${name}{bg:thistle}]`;
       default:
         return `[${name}]`;
     }

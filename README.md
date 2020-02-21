@@ -27,9 +27,3 @@ wit-ts2uml --glob ./src/**/*.ts
     > 支持生成的 UML 图输出本地
 
     > TS 的 DGL 增强
-
-#### 示例
-
-生成 UML 如图 [demo folder](https://src/demo):
-
-![](/assets/uml_diagram.svg)
