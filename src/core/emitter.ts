@@ -1,6 +1,3 @@
-// import * as ts from "typescript";
-// import { flatten, join } from "lodash";
-// import * as path from "path";
 import { PropertyDetails, MethodDetails, HeritageClause } from "./interfaces";
 import { templates } from "./templates";
 
@@ -11,7 +8,7 @@ export function emitSingleClass(
   summary: any
 ) {
   summary[name] = [];
-  properties.forEach(p => ExtractTypesFromProperty(name, p, summary));
+  properties.forEach(p => extractTypesFromProperty(name, p, summary));
   methods.forEach(m => extractTypesFromMethod(name, m, summary));
   return templates.class(name, properties, methods);
 }
@@ -23,7 +20,7 @@ export function emitSingleInterface(
   summary: any
 ) {
   summary[name] = [];
-  properties.forEach(p => ExtractTypesFromProperty(name, p, summary));
+  properties.forEach(p => extractTypesFromProperty(name, p, summary));
   methods.forEach(m => extractTypesFromMethod(name, m, summary));
   return templates.interface(name, properties, methods);
 }
@@ -35,7 +32,7 @@ export function emitSingleEnum(
   summary: any
 ) {
   summary[name] = [];
-  properties.forEach(p => ExtractTypesFromProperty(name, p, summary));
+  properties.forEach(p => extractTypesFromProperty(name, p, summary));
   return templates.enum(name, properties, methods);
 }
 
@@ -49,16 +46,10 @@ export function emitHeritageClauses(heritageClauses: HeritageClause[]) {
 }
 
 export function emitSimpleAssociations(source: string, associated: string) {
-  // return heritageClauses.map(heritageClause =>
-  //   templates.implementsOrExtends(
-  //     heritageClause.clause,
-  //     heritageClause.className
-  //   )
-  // );
   return templates.simpleAssociate(source, associated);
 }
 
-function ExtractTypesFromProperty(
+function extractTypesFromProperty(
   key: string,
   property: PropertyDetails,
   summary: any

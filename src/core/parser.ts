@@ -1,8 +1,6 @@
 import * as TsMorph from "ts-morph";
 import * as ts from "typescript";
-// import { flatten, join } from "lodash";
 import { PropertyDetails, MethodDetails, HeritageClause } from "./interfaces";
-// import { stringify } from "querystring";
 
 export function getAst(tsConfigPath: string, sourceFilesPaths?: string[]) {
   const ast = new TsMorph.Project({
@@ -18,7 +16,7 @@ export function getAst(tsConfigPath: string, sourceFilesPaths?: string[]) {
 
 export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
   // let className = classDeclaration.getSymbol()!.getName();
-  // if(className === 'default')
+
   const className = classDeclaration.getName() + "";
 
   const propertyDeclarations = classDeclaration.getProperties();
@@ -34,11 +32,12 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
         property.hasModifier(ts.SyntaxKind.PublicKeyword) &&
         property.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
 
-      console.log(
-        "isPublic:" + isPublic + ":" + sym?.getName() + "[" + type + "]"
-      );
+      // console.log(
+      //   "isPublic:" + isPublic + ":" + sym?.getName() + "[" + type + "]"
+      // );
 
-      if (isPublic && sym) {
+      // if (isPublic && sym) {
+      if (sym) {
         return {
           name: sym.getName(),
           propertyType: type
@@ -50,38 +49,18 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
   const methods = methodDeclarations
     .map(method => {
       const sym = method.getSymbol();
-      // const t = method
-      //   .getReturnType()
-      //   .getText(
-      //     method.getReturnTypeNode(),
-      //     ts.TypeFormatFlags.UseTypeOfFunction
-      //   );
-
-      // const c = method
-      //   .getSignature()
-      //   .getTypeParameters()
-      //   .map(p =>
-      //     p
-      //       .getDefault()
-      //       ?.getApparentType()
-      //       .getText()
-      //   )
-      //   .join(",");
       const methodType = method.getType();
       let type = "" + methodType?.getText();
 
-      const isPublic =
-        method.hasModifier(ts.SyntaxKind.PublicKeyword) &&
-        method.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
+      // const isPublic =
+      //   method.hasModifier(ts.SyntaxKind.PublicKeyword) &&
+      //   method.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
 
-      console.log(
-        "isPublic:" + isPublic + ":" + sym?.getName() + "[" + type + "]"
-      );
+      // console.log(
+      //   "isPublic:" + isPublic + ":" + sym?.getName() + "[" + type + "]"
+      // );
       let returnType = "";
       let params = "";
-
-      //       isPublic:false:getTreeItem[(element: { key: string; }) => import("vscode").TreeItem | Thenable<import("vscode").TreeItem>]
-      // isPublic:false:getTreeItemInternal[(key: string) => import("vscode").TreeItem]
 
       if (type && type.length > 3) {
         // type = type.substring(1);
@@ -203,75 +182,19 @@ export function parseHeritageClauses(
   return heritageClauses;
 }
 
-// export function parseConnectClauses(
-//   interfaceDeclaration: TsMorph.InterfaceDeclaration
-// ) {
-//   const className = interfaceDeclaration.getSymbol()!.getName();
-//   const extended = interfaceDeclaration.getExtends();
-//   interfaceDeclaration.getHeritageClauses;
-//   // const implemented = interfaceDeclaration.getImplements();
-//   let heritageClauses: HeritageClause[] = [];
-
-//   if (extended) {
-//     const identifier = extended.getChildrenOfKind(ts.SyntaxKind.Identifier)[0];
-//     // extended.g
-//     if (identifier) {
-//       const sym = identifier.getSymbol();
-//       if (sym) {
-//         heritageClauses.push({
-//           clause: sym.getName(),
-//           className
-//         });
-//       }
-//     }
-//   }
-
-//   if (implemented) {
-//     implemented.forEach(i => {
-//       const identifier = i.getChildrenOfKind(ts.SyntaxKind.Identifier)[0];
-//       if (identifier) {
-//         const sym = identifier.getSymbol();
-//         if (sym) {
-//           heritageClauses.push({
-//             clause: sym.getName(),
-//             className
-//           });
-//         }
-//       }
-//     });
-//   }
-
-//   return heritageClauses;
-// }
-
 export function parseEnums(enumDeclaration: TsMorph.EnumDeclaration) {
   const enumName = enumDeclaration.getSymbol()!.getName();
-  const enumMembers = enumDeclaration.getMembers(); //.getProperties();
-  // const methodDeclarations = enumDeclaration.getMethods();
+  const enumMembers = enumDeclaration.getMembers();
 
   const properties = enumMembers
     .map(property => {
-      // const sym = property.getSymbol();
-      // const propertyType = property.getType();
-      // let type = "" + propertyType?.getText();
       let type = "" + property.getText();
-
-      // const isPublic =
-      //   property.hasModifier(ts.SyntaxKind.PublicKeyword) &&
-      //   property.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
-
-      // console.log(
-      //   "isPublic:" + isPublic + ":" + sym?.getName() + "[" + type + "]"
-      // );
-
-      // if (isPublic && sym) {
       return {
-        name: type, //sym.getName()
+        name: type,
         propertyType: ""
       };
-      // }
     })
     .filter(p => p !== undefined) as PropertyDetails[];
 
-  return { className: enumName, properties };
+  return { className: enumName, properties }; //use className for enumName
 }

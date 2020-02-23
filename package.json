@@ -4,7 +4,7 @@
     "description": "UML diagrams for TypeScript",
     "main": "dist/lib/index.js",
     "bin": {
-        "wit-ts2uml": "dist/bin/index.js"
+        "ts2uml": "dist/bin/index.js"
     },
     "scripts": {
         "compile": "tsc -p tsconfig.json",

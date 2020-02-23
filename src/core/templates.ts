@@ -18,8 +18,6 @@ export const templates = {
     return `,[${source}]->[${associated}]`;
   },
   plainClassOrInterface: (name: string) => `[${name}]`,
-  // colorClass: (name: string) => `[${name}]`, //`[${name}{bg:skyblue}]`,
-  // colorInterface: (name: string) => `[${name}{bg:yellows}]`, //{bg:pink}]`, //`[${name}{bg:palegreen}]`,
   color4Type: (name: string, type: SupportedTypes) => {
     switch (type) {
       case SupportedTypes.CLASS:
@@ -43,14 +41,6 @@ export const templates = {
     props: PropertyDetails[],
     methods: MethodDetails[]
   ) => {
-    // const pTemplate = (property: PropertyDetails) => `${property.name};`;
-    // const mTemplate = (method: MethodDetails) => `${method.name}();`;
-    // return (
-    //   `${templates.colorInterface(name)}` +
-    //   `[${name}|${props.map(pTemplate).join("")}|${methods
-    //     .map(mTemplate)
-    //     .join("")}]`
-    // );
     return parsePropsAndMethods(name, SupportedTypes.INTERFACE, props, methods);
   }
 };
@@ -89,8 +79,7 @@ function parsePropsAndMethods(
   function parseType(type: string) {
     return !type
       ? ""
-      : // : ": " +
-        "" +
+      : "" +
           type
             .replace(/\|/g, "｜")
             .replace(/\[/g, "［") //［］

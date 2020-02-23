@@ -2,8 +2,9 @@
 
 import chalk from "chalk";
 import * as yargs from "yargs";
-import { getUrl, getDsl } from "../core";
-import { download, downloadAndSave } from "../core/io";
+import { getDiagramUrl } from "../core";
+import { downloadAndSave } from "../core/io";
+import open from "open";
 
 (async () => {
   try {
@@ -12,29 +13,30 @@ import { download, downloadAndSave } from "../core/io";
     }
 
     let pattern = yargs.argv.glob as string;
-    // pattern = "./src/**/*.ts";
-    // pattern =
-    //   "/Users/phoenixjiang/Source/vs-ext-sample-new/vscode-extension-samples/tree-view-sample/src/**/*.ts";
+    if (!pattern) {
+      pattern = "./src/**/*.ts";
+
+      console.log(
+        chalk.yellowBright("Missing --glob and execute with './src/**/*.ts'")
+      );
+    }
 
     // pattern = "/Users/phoenixjiang/Source/p_wit_tree_vue/**/*.ts";
     pattern = "/Users/phoenixjiang/Source/p_wit_menu_vue/**/*.ts";
 
-    if (!pattern) {
-      console.log(chalk.redBright("Missing --glob"));
-    } else {
-      const url = await getUrl("./tsconfig.json", pattern);
-      if (url) {
-        await downloadAndSave(url);
-        // const opn = require("open");
-        // opn(url);
-      }
+    const url = await getDiagramUrl("./tsconfig.json", pattern);
 
-      // const dsl = await getDsl("./tsconfig.json", pattern);
-      // console.log(dsl);
+    if (url) {
+      let path = await downloadAndSave(url);
+      let canOpen = yargs.argv.open as string;
+      canOpen = "y";
+
+      if (canOpen) {
+        const open = require("open");
+        open(path, { app: "google chrome" });
+      }
     }
   } catch (e) {
-    console.log(e);
-    console.log(e.stack);
-    // console.log(chalk.redBright(e));
+    console.log(chalk.redBright(e.stack));
   }
 })();

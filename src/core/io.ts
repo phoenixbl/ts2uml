@@ -1,6 +1,7 @@
 import glob from "glob";
 import * as request from "request";
 import * as fs from "fs";
+import chalk from "chalk";
 
 export async function findFilesByGlob(pattern: string) {
   return new Promise<string[]>((res, rej) => {
@@ -14,7 +15,7 @@ export async function findFilesByGlob(pattern: string) {
   });
 }
 
-export async function download(dsl: string) {
+export async function generateDiagram(dsl: string) {
   return new Promise<string>((resolve, reject) => {
     const url = "https://yuml.me/diagram/boring/class/";
 
@@ -34,8 +35,12 @@ export async function download(dsl: string) {
         reject(err);
         return "";
       }
-      console.log(body);
+
       if (body) {
+        console.log(
+          chalk.yellowBright(`generate diagram on: https://yuml.me/${body}`)
+        );
+
         const svgFileName = body.replace(".png", ".svg");
         const diagramUrl = `${url}${svgFileName}`;
         resolve(diagramUrl);
@@ -49,6 +54,8 @@ export async function download(dsl: string) {
 
 export async function downloadAndSave(url: string) {
   return new Promise<string>((resolve, reject) => {
+    console.log("start download and save...");
+
     request.get(
       {
         url: url,
@@ -68,8 +75,10 @@ export async function downloadAndSave(url: string) {
 
         let content = response.body;
         response.on("close", () => {
-          console.log("close diagram");
+          console.log("done.");
+          resolve(filePath);
         });
+
         file.write(content);
 
         file.on("end", () => {
