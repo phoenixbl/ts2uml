@@ -48,7 +48,7 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
     .map(method => parseMethod(method))
     .filter(p => p !== undefined) as MethodDetails[];
 
-  console.log(properties);
+  // console.log(properties);
   return { className, properties, methods };
 }
 

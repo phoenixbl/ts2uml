@@ -21,8 +21,8 @@ export async function getDiagramUrl(tsConfigPath: string, pattern: string) {
 
   console.log(chalk.gray("DSL:\n" + dsl));
 
-  // return await generateDiagram(dsl);
-  return "";
+  return await generateDiagram(dsl);
+  // return "";
 }
 
 async function generateDsl(tsConfigPath: string, pattern: string) {
