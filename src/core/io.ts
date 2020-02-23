@@ -17,7 +17,7 @@ export async function findFilesByGlob(pattern: string) {
 
 export async function generateDiagram(dsl: string) {
   return new Promise<string>((resolve, reject) => {
-    const url = "https://yuml.me/diagram/boring/class/";
+    const url = "https://yuml.me/diagram/boring;dir:LR/class/"; //nofunky;dir:LR
 
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //这种也可以fix CERT_HAS_EXPIRED，但是全局选项，方法不可取
 
