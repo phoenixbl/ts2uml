@@ -1,31 +1,41 @@
-import * as ts from "typescript";
-import { flatten, join } from "lodash";
-import * as path from "path";
+// import * as ts from "typescript";
+// import { flatten, join } from "lodash";
+// import * as path from "path";
 import { PropertyDetails, MethodDetails, HeritageClause } from "./interfaces";
 import { templates } from "./templates";
-import { download } from "./io";
 
 export function emitSingleClass(
   name: string,
   properties: PropertyDetails[],
-  methods: MethodDetails[]
+  methods: MethodDetails[],
+  summary: any
 ) {
+  summary[name] = [];
+  properties.forEach(p => ExtractTypesFromProperty(name, p, summary));
+  methods.forEach(m => extractTypesFromMethod(name, m, summary));
   return templates.class(name, properties, methods);
 }
 
 export function emitSingleInterface(
   name: string,
   properties: PropertyDetails[],
-  methods: MethodDetails[]
+  methods: MethodDetails[],
+  summary: any
 ) {
+  summary[name] = [];
+  properties.forEach(p => ExtractTypesFromProperty(name, p, summary));
+  methods.forEach(m => extractTypesFromMethod(name, m, summary));
   return templates.interface(name, properties, methods);
 }
 
 export function emitSingleEnum(
   name: string,
   properties: PropertyDetails[],
-  methods: MethodDetails[]
+  methods: MethodDetails[],
+  summary: any
 ) {
+  summary[name] = [];
+  properties.forEach(p => ExtractTypesFromProperty(name, p, summary));
   return templates.enum(name, properties, methods);
 }
 
@@ -36,4 +46,34 @@ export function emitHeritageClauses(heritageClauses: HeritageClause[]) {
       heritageClause.className
     )
   );
+}
+
+export function emitSimpleAssociations(source: string, associated: string) {
+  // return heritageClauses.map(heritageClause =>
+  //   templates.implementsOrExtends(
+  //     heritageClause.clause,
+  //     heritageClause.className
+  //   )
+  // );
+  return templates.simpleAssociate(source, associated);
+}
+
+function ExtractTypesFromProperty(
+  key: string,
+  property: PropertyDetails,
+  summary: any
+) {
+  if (property.propertyType) summary[key].push(property.propertyType);
+}
+
+function extractTypesFromMethod(
+  key: string,
+  method: MethodDetails,
+  summary: any
+) {
+  if (method.returnType && method.returnType !== "void")
+    summary[key].push(method.returnType);
+  if (method.parameters) {
+    summary[key].push(method.parameters);
+  }
 }

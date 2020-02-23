@@ -14,6 +14,9 @@ export const templates = {
       `^-${templates.plainClassOrInterface(implementation)}`
     );
   },
+  simpleAssociate: (source: string, associated: string) => {
+    return `,[${source}]->[${associated}]`;
+  },
   plainClassOrInterface: (name: string) => `[${name}]`,
   // colorClass: (name: string) => `[${name}]`, //`[${name}{bg:skyblue}]`,
   // colorInterface: (name: string) => `[${name}{bg:yellows}]`, //{bg:pink}]`, //`[${name}{bg:palegreen}]`,
@@ -67,7 +70,10 @@ function parsePropsAndMethods(
     `${method.name}${
       method.returnType === "void"
         ? "()"
-        : "(" + parseType(method.c) + "): " + parseType(method.returnType)
+        : "(" +
+          parseType(method.parameters) +
+          "): " +
+          parseType(method.returnType)
     };`;
 
   let parsedProperties = props.map(pTemplate).join("");

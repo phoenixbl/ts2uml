@@ -3,6 +3,7 @@ import chalk from "chalk";
 import { flatten, join } from "lodash";
 import { findFilesByGlob, download } from "./io";
 // import { emitSingleEnum } from "./emitter";
+import { templates } from "./templates";
 import {
   getAst,
   parseClasses,
@@ -28,6 +29,9 @@ export async function getDsl(tsConfigPath: string, pattern: string) {
 
   const ast = getAst(tsConfigPath, sourceFilesPaths);
   const files = ast.getSourceFiles();
+  let summary: { [key: string]: [] } = {};
+
+  // let right = [];
 
   // parser
   const declarations = files.map(f => {
@@ -44,22 +48,54 @@ export async function getDsl(tsConfigPath: string, pattern: string) {
     };
   });
 
+  // for (let i = 0; i < declarations.length; i++) {
+  //   const d = declarations[i];
+  //   d.interfaces.forEach(i => {
+  //     left.push([i.interfaceName]:[]);
+  //   });
+  // }
+
   // emitter
   const entities = declarations.map(d => {
     const classes = d.classes.map(c =>
-      emitSingleClass(c.className, c.properties, c.methods)
+      emitSingleClass(c.className, c.properties, c.methods, summary)
     );
     const interfaces = d.interfaces.map(i =>
-      emitSingleInterface(i.interfaceName, i.properties, i.methods)
+      emitSingleInterface(i.interfaceName, i.properties, i.methods, summary)
     );
     const enums = d.enums.map(e =>
-      emitSingleEnum(e.className, e.properties, [])
+      emitSingleEnum(e.className, e.properties, [], summary)
     );
     const heritageClauses = d.heritageClauses.map(emitHeritageClauses);
+
+    //build simple SimpleAssociation
+    // const associations = buildSimpleAssociation(summary);
+
     return [...enums, ...classes, ...interfaces, ...heritageClauses];
   });
 
-  return join(flatten(entities), ",");
+  const associations = buildSimpleAssociation(summary);
+
+  return join(flatten(entities), ",") + associations;
+}
+
+function buildSimpleAssociation(summary: { [key: string]: [] }): string {
+  let association: string = "";
+
+  for (const key in summary) {
+    summary[key].forEach(el => {
+      Object.keys(summary).forEach(k => {
+        let m = new RegExp("(^|\\W)" + k + "(\\W|$)");
+        let s = el as string;
+        if (s.match(m)) {
+          let tmp = templates.simpleAssociate(key, k);
+          if (association.indexOf(tmp) < 0) association += tmp;
+        }
+      });
+    });
+  }
+
+  return association;
 }
 
 export async function getUrl(tsConfigPath: string, pattern: string) {

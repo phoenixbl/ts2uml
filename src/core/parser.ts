@@ -101,7 +101,7 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
         return {
           name: sym.getName(),
           returnType: returnType,
-          c: params
+          parameters: params
         };
       }
     })
@@ -135,7 +135,7 @@ export function parseInterfaces(
     .map(method => {
       const sym = method.getSymbol();
       const t = method.getReturnType().getText();
-      const c = method
+      const parameters = method
         .getSignature()
         .getTypeParameters()
         .map(p =>
@@ -149,7 +149,7 @@ export function parseInterfaces(
         return {
           name: sym.getName(),
           returnType: t,
-          c: c,
+          parameters: parameters,
           paramS: method.getParameters().map(p => {
             return;
           })
@@ -199,6 +199,47 @@ export function parseHeritageClauses(
 
   return heritageClauses;
 }
+
+// export function parseConnectClauses(
+//   interfaceDeclaration: TsMorph.InterfaceDeclaration
+// ) {
+//   const className = interfaceDeclaration.getSymbol()!.getName();
+//   const extended = interfaceDeclaration.getExtends();
+//   interfaceDeclaration.getHeritageClauses;
+//   // const implemented = interfaceDeclaration.getImplements();
+//   let heritageClauses: HeritageClause[] = [];
+
+//   if (extended) {
+//     const identifier = extended.getChildrenOfKind(ts.SyntaxKind.Identifier)[0];
+//     // extended.g
+//     if (identifier) {
+//       const sym = identifier.getSymbol();
+//       if (sym) {
+//         heritageClauses.push({
+//           clause: sym.getName(),
+//           className
+//         });
+//       }
+//     }
+//   }
+
+//   if (implemented) {
+//     implemented.forEach(i => {
+//       const identifier = i.getChildrenOfKind(ts.SyntaxKind.Identifier)[0];
+//       if (identifier) {
+//         const sym = identifier.getSymbol();
+//         if (sym) {
+//           heritageClauses.push({
+//             clause: sym.getName(),
+//             className
+//           });
+//         }
+//       }
+//     });
+//   }
+
+//   return heritageClauses;
+// }
 
 export function parseEnums(enumDeclaration: TsMorph.EnumDeclaration) {
   const enumName = enumDeclaration.getSymbol()!.getName();
