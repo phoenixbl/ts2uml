@@ -33,7 +33,7 @@ import open from "open";
 
       if (canOpen) {
         const open = require("open");
-        open(path, { app: "google chrome" });
+        open(path, { app: "google chrome" }); //for mac
       }
     }
   } catch (e) {

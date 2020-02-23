@@ -1,6 +1,11 @@
 import * as TsMorph from "ts-morph";
 import * as ts from "typescript";
-import { PropertyDetails, MethodDetails, HeritageClause } from "./interfaces";
+import {
+  PropertyDetails,
+  MethodDetails,
+  HeritageClause,
+  AccessType
+} from "./interfaces";
 
 export function getAst(tsConfigPath: string, sourceFilesPaths?: string[]) {
   const ast = new TsMorph.Project({
@@ -28,67 +33,22 @@ export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
       const propertyType = property.getType();
       let type = "" + propertyType?.getText();
 
-      const isPublic =
-        property.hasModifier(ts.SyntaxKind.PublicKeyword) &&
-        property.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
-
-      // console.log(
-      //   "isPublic:" + isPublic + ":" + sym?.getName() + "[" + type + "]"
-      // );
-
-      // if (isPublic && sym) {
       if (sym) {
         return {
           name: sym.getName(),
-          propertyType: type
+          propertyType: type,
+          accessType: parseAccessType(property),
+          decorated: parseDecorated(property)
         };
       }
     })
     .filter(p => p !== undefined) as PropertyDetails[];
 
   const methods = methodDeclarations
-    .map(method => {
-      const sym = method.getSymbol();
-      const methodType = method.getType();
-      let type = "" + methodType?.getText();
-
-      // const isPublic =
-      //   method.hasModifier(ts.SyntaxKind.PublicKeyword) &&
-      //   method.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
-
-      // console.log(
-      //   "isPublic:" + isPublic + ":" + sym?.getName() + "[" + type + "]"
-      // );
-      let returnType = "";
-      let params = "";
-
-      if (type && type.length > 3) {
-        // type = type.substring(1);
-
-        let index = type.indexOf("=>"); //=＞ void
-        if (index < 0) {
-          returnType = "void";
-          if (type.startsWith("typeof ")) {
-            params = "";
-          } else {
-            params = type;
-          }
-        } else {
-          returnType = type.substring(index + 2).trim();
-          params = type.substring(1, index - 2); //receiveMessageHandlers: { [cmd: string]: Function; }) => void
-        }
-      }
-
-      if (sym) {
-        return {
-          name: sym.getName(),
-          returnType: returnType,
-          parameters: params
-        };
-      }
-    })
+    .map(method => parseMethod(method))
     .filter(p => p !== undefined) as MethodDetails[];
 
+  console.log(properties);
   return { className, properties, methods };
 }
 
@@ -107,37 +67,16 @@ export function parseInterfaces(
       if (sym) {
         return {
           name: sym.getName(),
-          propertyType: propertyType?.getText()
+          propertyType: propertyType?.getText(),
+          accessType: parseAccessType(property),
+          decorated: ""
         };
       }
     })
     .filter(p => p !== undefined) as PropertyDetails[];
 
   const methods = methodDeclarations
-    .map(method => {
-      const sym = method.getSymbol();
-      const t = method.getReturnType().getText();
-      const parameters = method
-        .getSignature()
-        .getTypeParameters()
-        .map(p =>
-          p
-            .getDefault()
-            ?.getApparentType()
-            .getText()
-        )
-        .join(",");
-      if (sym) {
-        return {
-          name: sym.getName(),
-          returnType: t,
-          parameters: parameters,
-          paramS: method.getParameters().map(p => {
-            return;
-          })
-        };
-      }
-    })
+    .map(method => parseMethod(method))
     .filter(p => p !== undefined) as MethodDetails[];
 
   return { interfaceName, properties, methods };
@@ -197,4 +136,69 @@ export function parseEnums(enumDeclaration: TsMorph.EnumDeclaration) {
     .filter(p => p !== undefined) as PropertyDetails[];
 
   return { className: enumName, properties }; //use className for enumName
+}
+
+function parseMethod(
+  method: TsMorph.MethodDeclaration | TsMorph.MethodSignature
+) {
+  const sym = method.getSymbol();
+  const methodType = method.getType();
+  let type = "" + methodType?.getText();
+  let returnType = "";
+  let params = "";
+
+  if (type && type.length > 3) {
+    // type = type.substring(1);
+
+    let index = type.indexOf("=>"); //=＞ void
+    if (index < 0) {
+      returnType = "void";
+      if (type.startsWith("typeof ")) {
+        params = "";
+      } else {
+        params = type;
+      }
+    } else {
+      returnType = type.substring(index + 2).trim();
+      params = type.substring(1, index - 2); //receiveMessageHandlers: { [cmd: string]: Function; }) => void
+    }
+  }
+
+  if (sym) {
+    return {
+      name: sym.getName(),
+      returnType: returnType,
+      parameters: params,
+      accessType: AccessType.PRIVATE,
+      decorated: ""
+    };
+  }
+}
+
+function parseAccessType(
+  property: TsMorph.PropertyDeclaration | TsMorph.PropertySignature
+): AccessType {
+  const isStatic =
+    property.hasModifier(ts.SyntaxKind.StaticKeyword) &&
+    property.getFirstModifierByKind(ts.SyntaxKind.StaticKeyword);
+
+  if (isStatic) return AccessType.STATIC;
+
+  const isPublic =
+    property.hasModifier(ts.SyntaxKind.PublicKeyword) &&
+    property.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
+
+  if (isPublic) return AccessType.PUBLIC;
+
+  const isProtected =
+    property.hasModifier(ts.SyntaxKind.ProtectedKeyword) &&
+    property.getFirstModifierByKind(ts.SyntaxKind.ProtectedKeyword);
+  if (isProtected) return AccessType.PROTECTED;
+
+  return AccessType.PRIVATE;
+}
+
+function parseDecorated(property: TsMorph.PropertyDeclaration): string {
+  const decorates = property.getDecorators();
+  return decorates.length === 0 ? "" : decorates[0].getName();
 }

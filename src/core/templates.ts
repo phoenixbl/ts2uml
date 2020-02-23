@@ -1,4 +1,4 @@
-import { PropertyDetails, MethodDetails } from "./interfaces";
+import { PropertyDetails, MethodDetails, AccessType } from "./interfaces";
 
 enum SupportedTypes {
   CLASS,
@@ -52,12 +52,22 @@ function parsePropsAndMethods(
   methods: MethodDetails[]
 ) {
   const pTemplate = (property: PropertyDetails) =>
-    `${property.name}${
+    `${
+      type === SupportedTypes.CLASS
+        ? property.decorated
+          ? parseDecorated(property.decorated)
+          : parseAccessType(property.accessType)
+        : ""
+    }${property.name}${
       !property.propertyType ? "" : ": " + parseType(property.propertyType)
     };`;
 
   const mTemplate = (method: MethodDetails) =>
-    `${method.name}${
+    `${
+      type == SupportedTypes.INTERFACE
+        ? ""
+        : parseAccessType(method.accessType) + parseDecorated(method.decorated)
+    }${method.name}${
       method.returnType === "void"
         ? "()"
         : "(" +
@@ -93,5 +103,23 @@ function parsePropsAndMethods(
             .replace(/import.+\/.+\./g, "") // import("vscode").TreeItem
             .replace(/import\(\"/g, "")
             .replace(/\"\)/g, "");
+  }
+
+  function parseAccessType(type: AccessType) {
+    switch (type) {
+      case AccessType.STATIC:
+        return "~";
+      case AccessType.PUBLIC:
+        return "+";
+      case AccessType.PROTECTED:
+        return "*";
+
+      default:
+        return "-";
+    }
+  }
+
+  function parseDecorated(decorated: string) {
+    return decorated ? `@${decorated} ` : "";
   }
 }
