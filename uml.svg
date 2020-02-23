@@ -124,7 +124,7 @@
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='360' y='-229.3'>-searchKey: string</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='360' y='-214.3'>@Prop menuConfig: IMenu</text>
 <polyline fill='none' filter='url(#shadow)' points='144.5,-210.5 575.5,-210.5 ' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polyline fill='none' points='144.5,-210.5 575.5,-210.5 ' stroke='black' style='fill:url(#none);stroke:black;'/>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='360' y='-199.3'>-onSearchKeyChange()</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='360' y='-199.3'>-@Watch onSearchKeyChange()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='360' y='-184.3'>-created()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='360' y='-169.3'>-filterMenu(filterMenu: IMenuItem［］， menu: any): IMenuItem［］</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='360' y='-154.3'>-canExecute(menuItem: IMenuItem): boolean</text>

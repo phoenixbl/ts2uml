@@ -169,36 +169,48 @@ function parseMethod(
       name: sym.getName(),
       returnType: returnType,
       parameters: params,
-      accessType: AccessType.PRIVATE,
-      decorated: ""
+      accessType: parseAccessType(method),
+      decorated: parseDecorated(method)
     };
   }
 }
 
 function parseAccessType(
-  property: TsMorph.PropertyDeclaration | TsMorph.PropertySignature
+  type:
+    | TsMorph.PropertyDeclaration
+    | TsMorph.PropertySignature
+    | TsMorph.MethodDeclaration
+    | TsMorph.MethodSignature
 ): AccessType {
+  if (type instanceof TsMorph.MethodSignature) return AccessType.PRIVATE;
+
   const isStatic =
-    property.hasModifier(ts.SyntaxKind.StaticKeyword) &&
-    property.getFirstModifierByKind(ts.SyntaxKind.StaticKeyword);
+    type.hasModifier(ts.SyntaxKind.StaticKeyword) &&
+    type.getFirstModifierByKind(ts.SyntaxKind.StaticKeyword);
 
   if (isStatic) return AccessType.STATIC;
 
   const isPublic =
-    property.hasModifier(ts.SyntaxKind.PublicKeyword) &&
-    property.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
+    type.hasModifier(ts.SyntaxKind.PublicKeyword) &&
+    type.getFirstModifierByKind(ts.SyntaxKind.PublicKeyword);
 
   if (isPublic) return AccessType.PUBLIC;
 
   const isProtected =
-    property.hasModifier(ts.SyntaxKind.ProtectedKeyword) &&
-    property.getFirstModifierByKind(ts.SyntaxKind.ProtectedKeyword);
+    type.hasModifier(ts.SyntaxKind.ProtectedKeyword) &&
+    type.getFirstModifierByKind(ts.SyntaxKind.ProtectedKeyword);
   if (isProtected) return AccessType.PROTECTED;
 
   return AccessType.PRIVATE;
 }
 
-function parseDecorated(property: TsMorph.PropertyDeclaration): string {
+function parseDecorated(
+  property:
+    | TsMorph.PropertyDeclaration
+    | TsMorph.MethodDeclaration
+    | TsMorph.MethodSignature
+): string {
+  if (property instanceof TsMorph.MethodSignature) return "";
   const decorates = property.getDecorators();
   return decorates.length === 0 ? "" : decorates[0].getName();
 }

@@ -54,7 +54,7 @@ export async function generateDiagram(dsl: string) {
 
 export async function downloadAndSave(url: string) {
   return new Promise<string>((resolve, reject) => {
-    console.log("start download and save...");
+    console.log("start download and save diagram...");
 
     request.get(
       {
