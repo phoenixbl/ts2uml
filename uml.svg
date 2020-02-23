@@ -107,9 +107,9 @@
 <polygon fill='black' filter='url(#shadow)' points='400.746,-60.9392 410.749,-65.4316 404.064,-64.6789 407.383,-68.4186 407.383,-68.4186 407.383,-68.4186 404.064,-64.6789 404.018,-71.4056 400.746,-60.9392 400.746,-60.9392' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='black' points='400.746,-60.9392 410.749,-65.4316 404.064,-64.6789 407.383,-68.4186 407.383,-68.4186 407.383,-68.4186 404.064,-64.6789 404.018,-71.4056 400.746,-60.9392 400.746,-60.9392' stroke='black' style='fill:url(#black);stroke:black;'/>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='408.104' y='-75.8363'>   </text>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='418.906' y='-138.983'>     </text>
-</g><g class='node' id='node6'><title>yuml_default</title>
+</g><g class='node' id='node6'><title>yuml_pwitmenucomponent</title>
 <polygon fill='lightgrey' filter='url(#shadow)' points='-0.5,-302.5 -0.5,-527.5 426.5,-527.5 426.5,-302.5 -0.5,-302.5' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='lightgrey' points='-0.5,-302.5 -0.5,-527.5 426.5,-527.5 426.5,-302.5 -0.5,-302.5' stroke='black' style='fill:url(#lightgrey);stroke:black;'/>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='213' y='-516.3'>default</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='213' y='-516.3'>PWitMenuComponent</text>
 <polyline fill='none' filter='url(#shadow)' points='-0.5,-512.5 426.5,-512.5 ' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polyline fill='none' points='-0.5,-512.5 426.5,-512.5 ' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='213' y='-501.3'>onSearchKeyChange()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='213' y='-486.3'>created()</text>
@@ -125,7 +125,7 @@
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='213' y='-336.3'>navItemMouseout()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='213' y='-321.3'>navChildMouseover()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='213' y='-306.3'>navChildMouseout()</text>
-</g><g class='edge' id='edge6'><title>yuml_default-&gt;yuml_imenuitem</title>
+</g><g class='edge' id='edge6'><title>yuml_pwitmenucomponent-&gt;yuml_imenuitem</title>
 <path d='M236.287,-302.298C241.785,-275.922 247.655,-247.764 253.177,-221.276' fill='none' stroke='black'/><path d='M236.287,-302.298C241.785,-275.922 247.655,-247.764 253.177,-221.276' fill='none' filter='url(#shadow)' stroke='black' style='stroke:{@stroke}; stroke-opacity:0.1; fill:none;'/>
 <polygon fill='black' filter='url(#shadow)' points='255.275,-211.213 257.639,-221.921 254.254,-216.108 253.234,-221.003 253.234,-221.003 253.234,-221.003 254.254,-216.108 248.829,-220.084 255.275,-211.213 255.275,-211.213' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='black' points='255.275,-211.213 257.639,-221.921 254.254,-216.108 253.234,-221.003 253.234,-221.003 253.234,-221.003 254.254,-216.108 248.829,-220.084 255.275,-211.213 255.275,-211.213' stroke='black' style='fill:url(#black);stroke:black;'/>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='244.743' y='-224.515'>   </text>
@@ -133,7 +133,7 @@
 </g><g class='node' id='node7'><title>yuml_vue</title>
 <polygon fill='lightgrey' filter='url(#shadow)' points='240,-661.5 186,-661.5 186,-618.5 240,-618.5 240,-661.5' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='lightgrey' points='240,-661.5 186,-661.5 186,-618.5 240,-618.5 240,-661.5' stroke='black' style='fill:url(#lightgrey);stroke:black;'/>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='213' y='-636.3'>Vue</text>
-</g><g class='edge' id='edge7'><title>yuml_vue-&gt;yuml_default</title>
+</g><g class='edge' id='edge7'><title>yuml_vue-&gt;yuml_pwitmenucomponent</title>
 <path d='M213,-608.134C213,-586.919 213,-557.332 213,-527.725' fill='none' stroke='black'/><path d='M213,-608.134C213,-586.919 213,-557.332 213,-527.725' fill='none' filter='url(#shadow)' stroke='black' style='stroke:{@stroke}; stroke-opacity:0.1; fill:none;'/>
 <polygon fill='none' filter='url(#shadow)' points='209.5,-608.42 213,-618.42 216.5,-608.42 209.5,-608.42' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='none' points='209.5,-608.42 213,-618.42 216.5,-608.42 209.5,-608.42' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='206.16' y='-542.818'>   </text>

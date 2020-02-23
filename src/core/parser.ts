@@ -17,7 +17,10 @@ export function getAst(tsConfigPath: string, sourceFilesPaths?: string[]) {
 }
 
 export function parseClasses(classDeclaration: TsMorph.ClassDeclaration) {
-  const className = classDeclaration.getSymbol()!.getName();
+  // let className = classDeclaration.getSymbol()!.getName();
+  // if(className === 'default')
+  const className = classDeclaration.getName() + "";
+
   const propertyDeclarations = classDeclaration.getProperties();
   const methodDeclarations = classDeclaration.getMethods();
 
@@ -164,7 +167,7 @@ export function parseInterfaces(
 export function parseHeritageClauses(
   classDeclaration: TsMorph.ClassDeclaration
 ) {
-  const className = classDeclaration.getSymbol()!.getName();
+  const className = classDeclaration.getName() + ""; //classDeclaration.getSymbol()!.getName();
   const extended = classDeclaration.getExtends();
   const implemented = classDeclaration.getImplements();
   let heritageClauses: HeritageClause[] = [];
