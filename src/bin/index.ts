@@ -33,8 +33,10 @@ import { downloadAndSave } from "../core/io";
 
       if (canOpen) {
         const open = require("open");
-        // open(path, { app: "google chrome" }); //for mac
-        open(path.startsWith('.') ? process.cwd() + path.substring(1) : path, { app: "chrome" }); //for win
+        open(path, { app: "google chrome" }); //for mac
+        // open(path.startsWith(".") ? process.cwd() + path.substring(1) : path, {
+        //   app: "chrome"
+        // }); //for win
       }
     }
   } catch (e) {

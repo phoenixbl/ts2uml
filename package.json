@@ -19,7 +19,7 @@
         "generator",
         "class"
     ],
-    "author": "Phoenix@WIT",
+    "author": "Phoenix.J",
     "license": "MIT",
     "devDependencies": {
         "@types/glob": "^7.1.1",
