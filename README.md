@@ -7,16 +7,13 @@
 #### 安裝教程
 
 ```sh
-npm install -g wit-ts2uml
-d
-
-
+npm install -g ts2uml
 ```
 
 #### 使用說明
 
 ```
-wit-ts2uml --glob ./src/**/*.ts
+ts2uml --glob ./src/**/*.ts
 ```
 
 #### 来源及说明
