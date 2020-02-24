@@ -23,4 +23,10 @@ ts2uml --glob ./src/**/*.ts
 
     > 支持生成的 UML 图输出本地
 
+    > 支持不同颜色表示类、接口、枚举，简单关联
+
     > TS 的 DGL 增强
+
+#### 示例
+
+![](/assets/uml_diagram.svg)

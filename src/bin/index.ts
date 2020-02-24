@@ -7,23 +7,18 @@ import { downloadAndSave } from "../core/io";
 
 (async () => {
   try {
-    // if (!yargs || !yargs.argv || yargs.argv.help) {
     console.log(chalk.yellowBright("default: ts2uml --glob ./src/**/*.ts"));
     console.log(chalk.yellowBright("--glob: path pattern"));
     console.log(chalk.yellowBright("--open: open with chrome"));
-    // }
 
     let pattern = yargs.argv.glob as string;
+    // console.log(pattern);
+
     if (!pattern) {
       pattern = "./src/**/*.ts";
-
-      console.log(
-        chalk.yellowBright("Missing --glob and execute with './src/**/*.ts'")
-      );
     }
 
-    // pattern = "/Users/phoenixjiang/Source/p_wit_tree_vue/**/*.ts";
-    // pattern = "/Users/phoenixjiang/Source/p_wit_menu_vue/**/*.ts";
+    console.log(chalk.yellowBright(`generate for ${pattern}`));
 
     const url = await getDiagramUrl("./tsconfig.json", pattern);
 
