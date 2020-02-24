@@ -1,6 +1,6 @@
 {
     "name": "ts2uml",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "UML diagrams for TypeScript",
     "main": "dist/lib/index.js",
     "bin": {
@@ -9,7 +9,8 @@
     "scripts": {
         "compile": "tsc -p tsconfig.json",
         "start": "npm run compile && node ./dist/bin/index.js",
-        "test": "echo 'test'"
+        "demo": "ts2uml --glob ./src/demo/**/*.ts --open",
+        "test": "npm run compile && npm link && npm run demo"
     },
     "keywords": [
         "typescript",

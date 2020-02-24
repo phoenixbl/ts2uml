@@ -4,13 +4,14 @@ import chalk from "chalk";
 import * as yargs from "yargs";
 import { getDiagramUrl } from "../core";
 import { downloadAndSave } from "../core/io";
-import open from "open";
 
 (async () => {
   try {
-    if (yargs.argv.help) {
-      console.log(chalk.yellowBright("ts2uml --glob ./src/**/*.ts"));
-    }
+    // if (!yargs || !yargs.argv || yargs.argv.help) {
+    console.log(chalk.yellowBright("default: ts2uml --glob ./src/**/*.ts"));
+    console.log(chalk.yellowBright("--glob: path pattern"));
+    console.log(chalk.yellowBright("--open: open with chrome"));
+    // }
 
     let pattern = yargs.argv.glob as string;
     if (!pattern) {
@@ -22,18 +23,18 @@ import open from "open";
     }
 
     // pattern = "/Users/phoenixjiang/Source/p_wit_tree_vue/**/*.ts";
-    pattern = "/Users/phoenixjiang/Source/p_wit_menu_vue/**/*.ts";
+    // pattern = "/Users/phoenixjiang/Source/p_wit_menu_vue/**/*.ts";
 
     const url = await getDiagramUrl("./tsconfig.json", pattern);
 
     if (url) {
       let path = await downloadAndSave(url);
       let canOpen = yargs.argv.open as string;
-      canOpen = "y";
 
       if (canOpen) {
         const open = require("open");
-        open(path, { app: "google chrome" }); //for mac
+        // open(path, { app: "google chrome" }); //for mac
+        open(path.startsWith('.') ? process.cwd() + path.substring(1) : path, { app: "chrome" }); //for win
       }
     }
   } catch (e) {
