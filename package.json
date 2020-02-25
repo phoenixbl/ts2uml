@@ -9,7 +9,7 @@
     "scripts": {
         "compile": "tsc -p tsconfig.json",
         "start": "npm run compile && node ./dist/bin/index.js",
-        "demo": "ts2uml --glob './demo/**/*.ts'",
+        "demo": "ts2uml --glob './src/demo/**/*.ts'",
         "test": "npm run compile && npm link && npm run demo"
     },
     "keywords": [
