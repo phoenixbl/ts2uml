@@ -52,7 +52,7 @@ export async function generateDiagram(dsl: string) {
   });
 }
 
-export async function downloadAndSave(url: string) {
+export async function downloadAndSave(url: string, output: string = "") {
   return new Promise<string>((resolve, reject) => {
     console.log("start download and save diagram...");
 
@@ -67,8 +67,10 @@ export async function downloadAndSave(url: string) {
         if (err) {
           console.error(err);
         }
+        output = output === "" ? "./uml.svg" : output;
+        output = output.endsWith(".svg") ? output : output + "/uml.svg";
 
-        const filePath = "./uml.svg";
+        const filePath = output;
         const file: NodeJS.WritableStream = fs.createWriteStream(filePath);
 
         file.on("error", err => console.error(err));

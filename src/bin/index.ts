@@ -9,6 +9,9 @@ import { downloadAndSave } from "../core/io";
     console.log(chalk.yellowBright("default: ts2uml --glob ./src/**/*.ts"));
     console.log(chalk.yellowBright("--glob: path pattern"));
     console.log(chalk.yellowBright("--open: open with chrome"));
+    console.log(
+      chalk.yellowBright("--output: path of svg saved, default is .")
+    );
 
     let pattern = yargs.argv.glob as string;
     // console.log(pattern);
@@ -22,7 +25,10 @@ import { downloadAndSave } from "../core/io";
     const url = await getDiagramUrl("./tsconfig.json", pattern);
 
     if (url) {
-      let path = await downloadAndSave(url);
+      let output = yargs.argv.output as string;
+      output = !output ? "" : output;
+
+      let path = await downloadAndSave(url, output);
       let canOpen = yargs.argv.open as string;
 
       if (canOpen) {

@@ -15,19 +15,26 @@ import {
   emitSingleEnum,
   emitSimpleAssociations
 } from "./emitter";
+import { resolve } from "dns";
 
 export async function getDiagramUrl(tsConfigPath: string, pattern: string) {
   let dsl = await generateDsl(tsConfigPath, pattern);
 
   console.log(chalk.gray("DSL:\n" + dsl));
+  if (dsl.trim().length == 0) {
+    console.log(chalk.redBright("Cannot generate DSL"));
+    return "";
+  }
 
   return await generateDiagram(dsl);
-  // return "";
 }
 
 async function generateDsl(tsConfigPath: string, pattern: string) {
   const sourceFilesPaths = await findFilesByGlob(pattern);
 
+  // if (sourceFilesPaths && sourceFilesPaths.length > 0) {
+  //   tsConfigPath = path.dirname(sourceFilesPaths[0]);
+  // }
   console.log(
     chalk.greenBright(
       "Matched files:\n" + sourceFilesPaths.reduce((p, c) => `${p}${c}\n`, "")
