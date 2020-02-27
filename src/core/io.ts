@@ -37,7 +37,7 @@ export async function generateDiagram(dsl: string) {
       }
 
       if (body) {
-        console.log(
+        console.debug(
           chalk.yellowBright(`generate diagram on: https://yuml.me/${body}`)
         );
 
@@ -54,7 +54,7 @@ export async function generateDiagram(dsl: string) {
 
 export async function downloadAndSave(url: string, output: string = "") {
   return new Promise<string>((resolve, reject) => {
-    console.log("start download and save diagram...");
+    console.debug("start download and save diagram...");
 
     request.get(
       {
@@ -77,14 +77,14 @@ export async function downloadAndSave(url: string, output: string = "") {
 
         let content = response.body;
         response.on("close", () => {
-          console.log("done.");
+          console.log(chalk.greenBright("done."));
           resolve(filePath);
         });
 
         file.write(content);
 
         file.on("end", () => {
-          console.log("close");
+          console.debug(chalk.greenBright("close."));
         });
       }
     );
